@@ -65,6 +65,11 @@ class NewsFragment : Fragment() {
 
                     is Resource.NoInternetConnection -> {
                         progressBar?.visibility = View.GONE
+                        Snackbar.make(
+                            requireView(),
+                            resources.getString(R.string.no_internet_connection),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
 
                     is Resource.Success -> {

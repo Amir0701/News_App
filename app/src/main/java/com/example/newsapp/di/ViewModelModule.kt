@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel {
-        NewsFragmentViewModel(get())
+        NewsFragmentViewModel(get(), get())
     }
 }

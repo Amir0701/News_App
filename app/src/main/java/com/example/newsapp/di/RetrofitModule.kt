@@ -1,6 +1,7 @@
 package com.example.newsapp.di
 
 import com.example.newsapp.data.interceptor.HttpHeaderInterceptor
+import com.example.newsapp.ui.common.InternetConnection
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,5 +41,9 @@ val retrofitModule = module {
             .addInterceptor(get<HttpLoggingInterceptor>(HttpLoggingInterceptor::class))
             .addInterceptor(get<HttpHeaderInterceptor>(HttpHeaderInterceptor::class))
             .build()
+    }
+
+    factory {
+        InternetConnection(get())
     }
 }
