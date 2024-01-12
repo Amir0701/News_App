@@ -7,7 +7,6 @@
         android:title="Search"
         android:icon="@drawable/search"
         app:showAsAction="always"
-        android:iconTint="@color/black"
         tools:targetApi="o" />
 
     <item

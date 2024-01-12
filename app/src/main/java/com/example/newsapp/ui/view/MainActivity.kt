@@ -2,6 +2,7 @@ package com.example.newsapp.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.TableLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -27,9 +28,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val navController = findNavController(R.id.fragment_container)
         bottomNavigation.setupWithNavController(navController)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_toolbar_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }
