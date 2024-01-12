@@ -2,4 +2,6 @@
     <string name="app_name">NewsApp</string>
     <string name="news_title_example">Tesla removes dates about Cybertruck production from its website</string>
     <string name="news_descrption_example">Elon Musk-owned electric vehicle company Tesla has reportedly removed the dates about Cybertruck production from its website.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

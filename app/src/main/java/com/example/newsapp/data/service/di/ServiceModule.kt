@@ -10,7 +10,10 @@ val serviceModule = module {
     includes(retrofitModule)
 
     single<ArticleService>() {
-        val retrofit = it.get<Retrofit>()
-        retrofit.create(ArticleService::class.java)
+        provideArticleService(get())
     }
+}
+
+fun provideArticleService(retrofit: Retrofit): ArticleService{
+    return retrofit.create(ArticleService::class.java)
 }
