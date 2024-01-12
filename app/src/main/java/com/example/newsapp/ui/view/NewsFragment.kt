@@ -1,7 +1,9 @@
 package com.example.newsapp.ui.view
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,7 +19,9 @@ import com.example.newsapp.ui.common.Resource
 import com.example.newsapp.ui.viewmodel.NewsFragmentViewModel
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsFragment : Fragment() {
@@ -26,6 +30,15 @@ class NewsFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
     private var tabLayout: TabLayout? = null
     private var progressBar: ProgressBar? = null
+
+    val sharedPreferences: SharedPreferences by inject()
+
+    private val categories = listOf(
+        R.string.politics,
+        R.string.sport,
+        R.string.nature,
+        R.string.science
+    )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +55,15 @@ class NewsFragment : Fragment() {
         setUpRecyclerView()
         observeOnArticles()
         newsFragmentViewModel.getArticles("politics")
+
+        for(category in categories){
+            val checkedStatus = sharedPreferences.getBoolean(resources.getString(category), false)
+            if(checkedStatus){
+                val newTab = tabLayout?.newTab() ?: TabLayout.Tab()
+                newTab.text = resources.getString(category)
+                tabLayout?.addTab(newTab)
+            }
+        }
     }
 
     override fun onStart() {
