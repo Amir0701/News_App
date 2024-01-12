@@ -1,4 +1,4 @@
-package com.example.newsapp.data.service.di
+package com.example.newsapp.di
 
 import com.example.newsapp.data.service.ArticleService
 import com.google.gson.Gson

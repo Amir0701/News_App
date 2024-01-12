@@ -22,6 +22,9 @@
             android:id="@+id/news_image"
             android:layout_width="match_parent"
             android:layout_height="160dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/article_image_shape"
+            android:clipToOutline="true"
             app:cornerRadius="8dp"/>
 
         <TextView

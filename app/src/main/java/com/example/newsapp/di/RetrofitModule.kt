@@ -1,4 +1,4 @@
-package com.example.newsapp.data.service.di
+package com.example.newsapp.di
 
 import com.example.newsapp.data.interceptor.HttpHeaderInterceptor
 import com.google.gson.Gson

@@ -18,7 +18,6 @@ class NewsFragmentViewModel(private val articlesRepository: ArticlesRepository):
     val articlesLiveData: LiveData<Resource<Result>> = _articlesLiveData
 
     fun getArticles(q: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO){
-        Log.i("TAG", "fun getArticles")
         val response = articlesRepository.getArticles(q, page)
         val resource = getResponse(response)
         _articlesLiveData.postValue(resource)
@@ -27,7 +26,6 @@ class NewsFragmentViewModel(private val articlesRepository: ArticlesRepository):
     private fun <T>getResponse(response: Response<T>): Resource<T>{
         if(response.isSuccessful){
             response.body()?.let {
-                Log.i("TAG", "fun getResponse")
                 return Resource.Success(it)
             }
         }
