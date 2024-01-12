@@ -37,7 +37,11 @@ class NewsFragment : Fragment() {
         newsFragmentViewModel.getArticles("politics")
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    override fun onStart() {
+        super.onStart()
+        (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.news_fragment_title)
+    }
+
     private fun observeOnArticles(){
         newsFragmentViewModel.articlesLiveData.observe(viewLifecycleOwner, Observer {
             newsFragmentViewModel.articlesLiveData.value?.let { resource->

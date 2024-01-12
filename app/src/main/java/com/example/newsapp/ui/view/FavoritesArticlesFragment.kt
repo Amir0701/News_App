@@ -16,4 +16,8 @@ class FavoritesArticlesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_favorites_articles, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.favorites_fragment_title)
+    }
 }
