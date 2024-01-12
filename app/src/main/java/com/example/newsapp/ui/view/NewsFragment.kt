@@ -55,6 +55,8 @@ class NewsFragment : Fragment() {
                 when(resource){
                     is Resource.Error -> {
                         progressBar?.visibility = View.GONE
+                        Log.i("error", resource.message.toString())
+                        Snackbar.make(requireView(), resource.message.toString(), Snackbar.LENGTH_LONG).show()
                     }
 
                     is Resource.Loading -> {
