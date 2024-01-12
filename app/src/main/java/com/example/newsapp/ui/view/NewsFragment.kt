@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.ui.common.Resource
 import com.example.newsapp.ui.viewmodel.NewsFragmentViewModel
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,6 +25,7 @@ class NewsFragment : Fragment() {
     private val newsAdapter = NewsAdapter()
     private var recyclerView: RecyclerView? = null
     private var tabLayout: TabLayout? = null
+    private var progressBar: ProgressBar? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +38,7 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.news_recycler)
         tabLayout = view.findViewById(R.id.category_tab_layout)
+        progressBar = view.findViewById(R.id.progress_bar)
         setUpRecyclerView()
         observeOnArticles()
         newsFragmentViewModel.getArticles("politics")
@@ -50,18 +54,19 @@ class NewsFragment : Fragment() {
             newsFragmentViewModel.articlesLiveData.value?.let { resource->
                 when(resource){
                     is Resource.Error -> {
-
+                        progressBar?.visibility = View.GONE
                     }
 
                     is Resource.Loading -> {
-
+                        progressBar?.visibility = View.VISIBLE
                     }
 
                     is Resource.NoInternetConnection -> {
-
+                        progressBar?.visibility = View.GONE
                     }
 
                     is Resource.Success -> {
+                        progressBar?.visibility = View.GONE
                         resource.data?.let { result->
                             newsAdapter.setData(result.articles)
                         }

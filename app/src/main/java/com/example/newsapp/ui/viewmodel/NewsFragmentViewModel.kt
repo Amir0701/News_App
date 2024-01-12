@@ -18,6 +18,7 @@ class NewsFragmentViewModel(private val articlesRepository: ArticlesRepository):
     val articlesLiveData: LiveData<Resource<Result>> = _articlesLiveData
 
     fun getArticles(q: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO){
+        _articlesLiveData.postValue(Resource.Loading())
         val response = articlesRepository.getArticles(q, page)
         val resource = getResponse(response)
         _articlesLiveData.postValue(resource)
