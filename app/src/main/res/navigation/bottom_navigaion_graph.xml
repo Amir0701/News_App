@@ -10,4 +10,19 @@
         android:name="com.example.newsapp.ui.view.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.newsapp.ui.view.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/favoritesArticlesFragment"
+        android:name="com.example.newsapp.ui.view.FavoritesArticlesFragment"
+        android:label="fragment_favorites_articles"
+        tools:layout="@layout/fragment_favorites_articles" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.newsapp.ui.view.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

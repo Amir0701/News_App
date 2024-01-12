@@ -6,17 +6,17 @@
         android:icon="@drawable/home"/>
 
     <item
-        android:id="@+id/history"
+        android:id="@+id/historyFragment"
         android:title="History"
         android:icon="@drawable/time" />
 
     <item
-        android:id="@+id/favorites"
+        android:id="@+id/favoritesArticlesFragment"
         android:title="Favorites"
         android:icon="@drawable/bookmark" />
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/settingsFragment"
         android:title="Settings"
         android:icon="@drawable/settings" />
 </menu>
