@@ -15,8 +15,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
     private var toolbar: Toolbar? = null
-    private var tabLayout: TabLayout? = null
-    //private var viewPager: ViewPager2? = null
 
     private val categories = listOf<String>(
         "Politics",
@@ -29,13 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        //viewPager = findViewById(R.id.pager)
-        tabLayout = findViewById(R.id.category_tab_layout)
-
-        /*TabLayoutMediator(tabLayout!!, viewPager!!){tab, pos->
-            tab.text = categories[pos]
-        }.attach()
-        */
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val navController = findNavController(R.id.fragment_container)

@@ -15,12 +15,14 @@ import com.example.newsapp.R
 import com.example.newsapp.ui.common.Resource
 import com.example.newsapp.ui.viewmodel.NewsFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsFragment : Fragment() {
     val newsFragmentViewModel: NewsFragmentViewModel by viewModel()
     private val newsAdapter = NewsAdapter()
     private var recyclerView: RecyclerView? = null
+    private var tabLayout: TabLayout? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +34,7 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.news_recycler)
+        tabLayout = view.findViewById(R.id.category_tab_layout)
         setUpRecyclerView()
         observeOnArticles()
         newsFragmentViewModel.getArticles("politics")
