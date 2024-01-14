@@ -64,6 +64,18 @@ class NewsFragment : Fragment() {
                 tabLayout?.addTab(newTab)
             }
         }
+
+        tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                newsFragmentViewModel.getArticles(tab?.text.toString())
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     override fun onStart() {
@@ -98,6 +110,7 @@ class NewsFragment : Fragment() {
                         progressBar?.visibility = View.GONE
                         resource.data?.let { result->
                             newsAdapter.setData(result.articles)
+                            recyclerView?.scrollToPosition(0)
                         }
                     }
                 }

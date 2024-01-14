@@ -48,12 +48,6 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         listDiffer.submitList(articles)
     }
 
-    fun appendData(articles: List<Article>){
-        val list = listDiffer.currentList
-        list.addAll(articles)
-        listDiffer.submitList(list)
-    }
-
     private val diffUtil: DiffUtil.ItemCallback<Article> = object: DiffUtil.ItemCallback<Article>(){
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.url == newItem.url
