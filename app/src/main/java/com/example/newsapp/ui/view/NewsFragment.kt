@@ -148,7 +148,7 @@ class NewsFragment : Fragment() {
             else{
                 tabLayout.visibility = View.INVISIBLE
                 changeRecyclerViewConstraints()
-                newsFragmentViewModel.getArticles("politics")
+                newsFragmentViewModel.getArticles("all")
             }
         }
     }
