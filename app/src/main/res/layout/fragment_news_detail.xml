@@ -27,13 +27,15 @@
             <TextView
                 android:id="@+id/detail_news_title"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:textSize="16sp"
+                android:maxHeight="48dp"
                 android:lineHeight="24dp"
+                android:textStyle="bold"
                 android:textColor="@color/tab_indicator_color"/>
             
             <TextView
