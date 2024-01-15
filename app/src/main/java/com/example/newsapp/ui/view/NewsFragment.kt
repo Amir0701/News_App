@@ -104,18 +104,29 @@ class NewsFragment : Fragment() {
     }
 
     private fun setUpTabLayout(){
+        var selectedTab: TabLayout.Tab? = null
+
         for(category in categories){
             val checkedStatus = sharedPreferences.getBoolean(resources.getString(category), false)
             if(checkedStatus){
+                val categoryTitle = resources.getString(category)
                 val newTab = tabLayout?.newTab() ?: TabLayout.Tab()
-                newTab.text = resources.getString(category)
+                newTab.text = categoryTitle
                 tabLayout?.addTab(newTab)
+
+                if(newsFragmentViewModel.selectedCategory == categoryTitle){
+                    selectedTab = newTab
+                }
             }
         }
+
+        if(selectedTab != null)
+            tabLayout?.selectTab(selectedTab)
 
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 newsFragmentViewModel.getArticles(tab?.text.toString())
+                newsFragmentViewModel.selectedCategory = tab?.text.toString()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -127,11 +138,15 @@ class NewsFragment : Fragment() {
 
         tabLayout?.let {tabLayout ->
             if(tabLayout.tabCount > 0){
-                val tab = tabLayout.getTabAt(tabLayout.selectedTabPosition)
-                newsFragmentViewModel.getArticles(tab?.text.toString())
+                if(newsFragmentViewModel.selectedCategory.isEmpty()){
+                    val tab = tabLayout.getTabAt(tabLayout.selectedTabPosition)
+                    newsFragmentViewModel.getArticles(tab?.text.toString())
+                } else {
+
+                }
             }
             else{
-                tabLayout.visibility= View.INVISIBLE
+                tabLayout.visibility = View.INVISIBLE
                 changeRecyclerViewConstraints()
                 newsFragmentViewModel.getArticles("politics")
             }

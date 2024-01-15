@@ -21,6 +21,7 @@ class NewsFragmentViewModel(
     private val _articlesLiveData: MutableLiveData<Resource<Result>> = MutableLiveData()
     val articlesLiveData: LiveData<Resource<Result>> = _articlesLiveData
 
+    var selectedCategory: String = ""
     fun getArticles(q: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO){
         if(internetConnection.hasInternetConnection()){
             _articlesLiveData.postValue(Resource.Loading())
