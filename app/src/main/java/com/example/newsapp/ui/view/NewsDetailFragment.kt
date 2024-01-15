@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
@@ -33,8 +37,33 @@ class NewsDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val toolbar = view.findViewById<Toolbar>(R.id.news_detail_toolbar)
+        //(activity as AppCompatActivity).setSupportActionBar(toolbar)
+//        actionBar?.setHomeButtonEnabled(true)
+//        actionBar?.setDisplayHomeAsUpEnabled(true)
+//        actionBar?.set
         initViews(view)
         setData()
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == android.R.id.home){
+            Log.i("Home", "Home clicked")
+            //requireActivity().onBackPressed()
+            item.setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener{
+                override fun onMenuItemClick(p0: MenuItem): Boolean {
+                    //findNavController().navigateUp()
+                    //findNavController().navigateUp()
+//                    requireActivity().onBackPressed()
+                    return true
+                }
+
+            })
+            findNavController().navigate(R.id.action_newsDetailFragment_to_bottom_navigaion_graph)
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initViews(view: View){
