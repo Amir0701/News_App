@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
@@ -121,5 +122,9 @@ class NewsFragment : Fragment() {
     private fun setUpRecyclerView(){
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = newsAdapter
+
+        newsAdapter.setOnArticleClickListener {
+            findNavController().navigate(R.id.action_newsFragment_to_newsDetailFragment)
+        }
     }
 }
