@@ -123,8 +123,10 @@ class NewsFragment : Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = newsAdapter
 
-        newsAdapter.setOnArticleClickListener {
-            findNavController().navigate(R.id.action_newsFragment_to_newsDetailFragment)
+        newsAdapter.setOnArticleClickListener {selectedArticle->
+            val bundle = Bundle()
+            bundle.putSerializable("article", selectedArticle)
+            findNavController().navigate(R.id.action_newsFragment_to_newsDetailFragment, bundle)
         }
     }
 }
