@@ -47,10 +47,7 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.news_recycler)
-        tabLayout = view.findViewById(R.id.category_tab_layout)
-        progressBar = view.findViewById(R.id.progress_bar)
-        constraintLayout = view.findViewById(R.id.parent_constraint)
+        initViews(view)
         setUpRecyclerView()
         observeOnArticles()
         setUpTabLayout()
@@ -60,7 +57,12 @@ class NewsFragment : Fragment() {
         super.onStart()
         (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.news_fragment_title)
     }
-
+    private fun initViews(view: View){
+        recyclerView = view.findViewById(R.id.news_recycler)
+        tabLayout = view.findViewById(R.id.category_tab_layout)
+        progressBar = view.findViewById(R.id.progress_bar)
+        constraintLayout = view.findViewById(R.id.parent_constraint)
+    }
     private fun observeOnArticles(){
         newsFragmentViewModel.articlesLiveData.observe(viewLifecycleOwner, Observer {
             newsFragmentViewModel.articlesLiveData.value?.let { resource->
