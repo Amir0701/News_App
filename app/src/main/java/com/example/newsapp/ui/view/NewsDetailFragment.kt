@@ -1,16 +1,22 @@
 package com.example.newsapp.ui.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toolbar
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -25,8 +31,24 @@ class NewsDetailFragment : Fragment() {
     private var newsDetailPublishedAt: TextView? = null
     private var newsDetailLinkToArticle: TextView? = null
     private var newsDetailLinkDescription: TextView? = null
-
+    private var actionBar: ActionBar? = null
     private val navArg by navArgs<NewsDetailFragmentArgs>()
+
+    private val menuProvider = object: MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menu.clear()
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            if (menuItem.itemId == android.R.id.home) {
+                Log.i("Home", "Home clicked")
+                findNavController().navigateUp()
+            }
+
+            return true
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,33 +59,11 @@ class NewsDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val toolbar = view.findViewById<Toolbar>(R.id.news_detail_toolbar)
-        //(activity as AppCompatActivity).setSupportActionBar(toolbar)
-//        actionBar?.setHomeButtonEnabled(true)
-//        actionBar?.setDisplayHomeAsUpEnabled(true)
-//        actionBar?.set
+        requireActivity().addMenuProvider(menuProvider)
+        actionBar = (activity as MainActivity).supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         initViews(view)
         setData()
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home){
-            Log.i("Home", "Home clicked")
-            //requireActivity().onBackPressed()
-            item.setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener{
-                override fun onMenuItemClick(p0: MenuItem): Boolean {
-                    //findNavController().navigateUp()
-                    //findNavController().navigateUp()
-//                    requireActivity().onBackPressed()
-                    return true
-                }
-
-            })
-            findNavController().navigate(R.id.action_newsDetailFragment_to_bottom_navigaion_graph)
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initViews(view: View){
@@ -88,5 +88,10 @@ class NewsDetailFragment : Fragment() {
         newsDetailLinkDescription?.text = "Read about article there"
         newsDetailPublishedAt?.text = selectedArticle.publishedAt
         newsDetailLinkToArticle?.text = selectedArticle.url
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        requireActivity().removeMenuProvider(menuProvider)
     }
 }
