@@ -5,12 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +25,9 @@ import com.example.newsapp.ui.common.Resource
 import com.example.newsapp.ui.viewmodel.NewsFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,6 +41,35 @@ class NewsFragment : Fragment() {
 
     val sharedPreferences: SharedPreferences by inject()
 
+    private val menuProvider = object : MenuProvider{
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            if(menuItem.itemId == R.id.search){
+                val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView?
+
+                searchView?.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(p0: String?): Boolean {
+                        newsFragmentViewModel.viewModelScope.launch(Dispatchers.IO) {
+                            p0?.let {query ->
+                                newsFragmentViewModel.getArticles(query)
+                            }
+                        }
+
+                        return true
+                    }
+
+                    override fun onQueryTextChange(p0: String?): Boolean {
+                        return false
+                    }
+                })
+            }
+
+            return false
+        }
+    }
     private val categories = listOf(
         R.string.politics,
         R.string.sport,
@@ -52,6 +90,12 @@ class NewsFragment : Fragment() {
         setUpRecyclerView()
         observeOnArticles()
         setUpTabLayout()
+        requireActivity().addMenuProvider(menuProvider)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().removeMenuProvider(menuProvider)
     }
 
     override fun onStart() {
