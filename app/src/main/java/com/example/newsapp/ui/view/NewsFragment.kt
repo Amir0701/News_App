@@ -148,6 +148,7 @@ class NewsFragment : Fragment() {
                 if(newsFragmentViewModel.selectedCategory.isEmpty()){
                     val tab = tabLayout.getTabAt(tabLayout.selectedTabPosition)
                     newsFragmentViewModel.getArticles(tab?.text.toString())
+                    newsFragmentViewModel.selectedCategory = tab?.text.toString()
                 } else {
 
                 }
