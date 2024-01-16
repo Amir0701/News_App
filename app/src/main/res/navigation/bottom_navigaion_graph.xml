@@ -9,7 +9,11 @@
         android:id="@+id/newsFragment"
         android:name="com.example.newsapp.ui.view.NewsFragment"
         android:label="fragment_news"
-        tools:layout="@layout/fragment_news" />
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_newsFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.newsapp.ui.view.HistoryFragment"
@@ -25,4 +29,20 @@
         android:name="com.example.newsapp.ui.view.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.example.newsapp.ui.view.NewsDetailFragment"
+        android:label="fragment_news_detail"
+        tools:layout="@layout/fragment_news_detail" >
+        <argument
+            android:name="article"
+            app:argType="com.example.newsapp.data.model.Article" />
+        <action
+            android:id="@+id/action_newsDetailFragment_to_bottom_navigaion_graph"
+            app:destination="@id/bottom_navigaion_graph" />
+        <action
+            android:id="@+id/action_newsDetailFragment_pop"
+            app:popUpTo="@id/newsDetailFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

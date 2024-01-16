@@ -42,6 +42,9 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val currentArticle = listDiffer.currentList[position]
         holder.bind(currentArticle)
+        holder.itemView.setOnClickListener {
+            onArticleClickListener?.invoke(currentArticle)
+        }
     }
 
     fun setData(articles: List<Article>){
@@ -59,4 +62,9 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     }
 
     private val listDiffer = AsyncListDiffer<Article>(this, diffUtil)
+
+    private var onArticleClickListener: ((article: Article) -> Unit)? = null
+    fun setOnArticleClickListener(clickListener: (article: Article) -> Unit){
+        onArticleClickListener = clickListener
+    }
 }

@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
@@ -101,6 +102,12 @@ class NewsFragment : Fragment() {
     private fun setUpRecyclerView(){
         recyclerView?.layoutManager = LinearLayoutManager(context)
         recyclerView?.adapter = newsAdapter
+
+        newsAdapter.setOnArticleClickListener {selectedArticle->
+            val bundle = Bundle()
+            bundle.putSerializable("article", selectedArticle)
+            findNavController().navigate(R.id.action_newsFragment_to_newsDetailFragment, bundle)
+        }
     }
 
     private fun setUpTabLayout(){
