@@ -129,6 +129,8 @@ class NewsFragment : Fragment() {
 
         if(selectedTab != null)
             tabLayout?.selectTab(selectedTab)
+        else
+            newsFragmentViewModel.selectedCategory = ""
 
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
