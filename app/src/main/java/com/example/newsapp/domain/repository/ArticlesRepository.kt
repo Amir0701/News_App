@@ -9,4 +9,6 @@ interface ArticlesRepository {
     suspend fun getArticles(q: String, page: Int = 1): Response<Result>
 
     suspend fun addArticleToHistory(article: ArticleEntity)
+
+    suspend fun getArticlesFromHistory(): List<ArticleEntity>
 }

@@ -16,4 +16,17 @@ class ArticleMapper {
             article.source
         )
     }
+
+    fun toArticle(articleEntity: ArticleEntity): Article{
+        return Article(
+            articleEntity.source,
+            articleEntity.author,
+            articleEntity.title,
+            articleEntity.description,
+            articleEntity.url,
+            articleEntity.urlToImage,
+            articleEntity.publishedAt,
+            articleEntity.content
+        )
+    }
 }

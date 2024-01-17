@@ -17,4 +17,8 @@ class ArticlesRepositoryImpl(private val articleService: ArticleService,
     override suspend fun addArticleToHistory(article: ArticleEntity) {
         articleDatabase.getDao().addToHistory(article)
     }
+
+    override suspend fun getArticlesFromHistory(): List<ArticleEntity> {
+        return articleDatabase.getDao().getArticlesFromHistory()
+    }
 }
