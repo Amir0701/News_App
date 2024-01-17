@@ -1,6 +1,7 @@
 package com.example.newsapp
 
 import android.app.Application
+import com.example.newsapp.di.localDataBase
 import com.example.newsapp.di.repositoryModule
 import com.example.newsapp.di.retrofitModule
 import com.example.newsapp.di.serviceModule
@@ -13,7 +14,15 @@ class App: Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(listOf(repositoryModule, serviceModule, viewModelModule, sharedPreferenceModule))
+            modules(
+                listOf(
+                    repositoryModule,
+                    serviceModule,
+                    viewModelModule,
+                    sharedPreferenceModule,
+                    localDataBase
+                )
+            )
         }
 
     }
