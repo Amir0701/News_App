@@ -22,6 +22,8 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
 import com.example.newsapp.data.model.Article
+import com.example.newsapp.ui.viewmodel.NewsDetailFragmentViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsDetailFragment : Fragment() {
     private var newsDetailImage: ImageView? = null
@@ -33,6 +35,7 @@ class NewsDetailFragment : Fragment() {
     private var newsDetailLinkDescription: TextView? = null
     private var actionBar: ActionBar? = null
     private val navArg by navArgs<NewsDetailFragmentArgs>()
+    val newsDetailViewModel: NewsDetailFragmentViewModel by viewModel()
 
     private val menuProvider = object: MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -66,6 +69,11 @@ class NewsDetailFragment : Fragment() {
         setData()
     }
 
+    override fun onStart() {
+        super.onStart()
+        newsDetailViewModel.addArticleToHistory(navArg.article)
+    }
+
     private fun initViews(view: View){
         newsDetailImage = view.findViewById(R.id.detail_news_image)
         newsDetailTitle = view.findViewById(R.id.detail_news_title)
@@ -75,6 +83,7 @@ class NewsDetailFragment : Fragment() {
         newsDetailPublishedAt = view.findViewById(R.id.detail_news_published_at)
         newsDetailLinkDescription = view.findViewById(R.id.detail_news_link_desc)
     }
+
 
     private fun setData(){
         val selectedArticle = navArg.article

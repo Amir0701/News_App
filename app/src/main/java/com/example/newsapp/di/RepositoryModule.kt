@@ -7,6 +7,6 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single<ArticlesRepository> {
-        ArticlesRepositoryImpl(get())
+        ArticlesRepositoryImpl(get(), get())
     }
 }
