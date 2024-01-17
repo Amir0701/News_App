@@ -30,6 +30,7 @@ class HistoryFragment : Fragment() {
         (activity as  MainActivity).supportActionBar?.title = resources.getString(R.string.history_fragment_title)
         articlesFromHistoryRecycler = view.findViewById(R.id.article_history_recycler)
         setUpRecycler()
+        historyFragmentViewModel.getArticlesFromHistory()
         observeOnArticlesFromHistory()
     }
 

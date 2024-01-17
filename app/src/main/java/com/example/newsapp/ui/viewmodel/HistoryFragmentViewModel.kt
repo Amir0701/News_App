@@ -17,10 +17,6 @@ class HistoryFragmentViewModel(
     private val _articlesInHistory = MutableLiveData<List<Article>>()
     val articlesInHistory: LiveData<List<Article>> = _articlesInHistory
 
-    init {
-        getArticlesFromHistory()
-    }
-
     fun getArticlesFromHistory() = viewModelScope.launch(Dispatchers.IO){
         val articlesFromHistory = articlesRepository.getArticlesFromHistory()
         val articles = articlesFromHistory.map(mapper::toArticle)
