@@ -25,6 +25,7 @@ import com.example.newsapp.presentation.viewmodel.NewsFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,6 +37,7 @@ class NewsFragment : Fragment() {
     private var tabLayout: TabLayout? = null
     private var progressBar: ProgressBar? = null
     private var constraintLayout: ConstraintLayout? = null
+    private var searchJob: Job? = null
 
     val sharedPreferences: SharedPreferences by inject()
 
@@ -50,10 +52,9 @@ class NewsFragment : Fragment() {
 
                 searchView?.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(p0: String?): Boolean {
-                        newsFragmentViewModel.viewModelScope.launch(Dispatchers.IO) {
-                            p0?.let {query ->
-                                newsFragmentViewModel.getArticles(query)
-                            }
+                        searchJob?.cancel()
+                        p0?.let {query ->
+                            searchJob = newsFragmentViewModel.getArticles(query)
                         }
 
                         return true
@@ -94,12 +95,14 @@ class NewsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         requireActivity().removeMenuProvider(menuProvider)
+        searchJob?.cancel()
     }
 
     override fun onStart() {
         super.onStart()
         (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.news_fragment_title)
     }
+
     private fun initViews(view: View){
         recyclerView = view.findViewById(R.id.news_recycler)
         tabLayout = view.findViewById(R.id.category_tab_layout)
@@ -117,7 +120,10 @@ class NewsFragment : Fragment() {
                     }
 
                     is Resource.Loading -> {
-                        progressBar?.visibility = View.VISIBLE
+                        if(searchJob?.isActive == true)
+                            progressBar?.visibility = View.VISIBLE
+                        else
+                            progressBar?.visibility = View.GONE
                     }
 
                     is Resource.NoInternetConnection -> {

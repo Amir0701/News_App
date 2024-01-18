@@ -23,11 +23,7 @@ class HistoryFragmentViewModel(
     fun getArticlesFromHistory() = viewModelScope.launch(Dispatchers.IO){
         val articlesFromHistory = articlesRepository.getArticlesFromHistory()
         val articles = articlesFromHistory.map(mapper::toArticle)
-        Log.i("hash code", articlesInHistory.hashCode().toString())
-        Log.i("hash code", articlesInHistory.toString())
         _articlesInHistory.postValue(articles)
-        Log.i("hash code", (articlesInHistory === prev).toString())
-
     }
 
     fun searchArticles(query: String) = viewModelScope.launch(Dispatchers.IO){
