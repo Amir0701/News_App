@@ -1,5 +1,7 @@
 package com.example.newsapp.presentation.view
 
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -35,12 +37,23 @@ class NewsDetailFragment : Fragment() {
     private val menuProvider = object: MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menu.clear()
+            menuInflater.inflate(R.menu.favorite_menu, menu)
         }
 
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-            if (menuItem.itemId == android.R.id.home) {
-                Log.i("Home", "Home clicked")
-                findNavController().navigateUp()
+            when(menuItem.itemId){
+                android.R.id.home ->{
+                    findNavController().navigateUp()
+                }
+
+                R.id.favorite ->{
+                    newsDetailViewModel.isFavorite = !newsDetailViewModel.isFavorite
+                    if(newsDetailViewModel.isFavorite){
+                        menuItem.setIcon(R.drawable.star_clicked)
+                    }
+                    else
+                        menuItem.setIcon(R.drawable.star)
+                }
             }
 
             return true

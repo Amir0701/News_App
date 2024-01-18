@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class NewsDetailFragmentViewModel(private val articlesRepository: ArticlesRepository,
                                   private val articleMapper: ArticleMapper): ViewModel() {
+    var isFavorite = false
     fun addArticleToHistory(article: Article) = viewModelScope.launch(Dispatchers.IO){
         val mappedArticleEntity = articleMapper.toArticleEntity(article)
         val articleEntity = mappedArticleEntity.copy(isInHistory = true)
