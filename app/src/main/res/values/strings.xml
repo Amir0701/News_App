@@ -16,4 +16,5 @@
     <string name="nature">Nature</string>
     <string name="science">Science</string>
     <string name="select_categories_title">Select the news categories you want to see on your home screen:</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.newsapp.presentation.view
 
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -45,6 +46,10 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         holder.itemView.setOnClickListener {
             onArticleClickListener?.invoke(currentArticle)
         }
+
+        holder.itemView.setOnTouchListener { view, motionEvent ->
+            onTouchListener?.invoke(motionEvent) ?: false
+        }
     }
 
     fun setData(articles: List<Article>){
@@ -66,5 +71,10 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     private var onArticleClickListener: ((article: Article) -> Unit)? = null
     fun setOnArticleClickListener(clickListener: (article: Article) -> Unit){
         onArticleClickListener = clickListener
+    }
+
+    private var onTouchListener: ((motionEvent: MotionEvent) -> Boolean)? = null
+    fun setOnTouchListener(onTouchListener: (motionEvent: MotionEvent) -> Boolean){
+        this.onTouchListener = onTouchListener
     }
 }
