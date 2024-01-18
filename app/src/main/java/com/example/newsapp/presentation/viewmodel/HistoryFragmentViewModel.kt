@@ -17,7 +17,6 @@ class HistoryFragmentViewModel(
 ): ViewModel() {
     private val _articlesInHistory = MutableLiveData<List<Article>>()
     val articlesInHistory: LiveData<List<Article>> = _articlesInHistory
-    var prev: LiveData<List<Article>>? = null
     private val _searchedArticles = MutableLiveData<List<Article>>()
     val searchedArticles: LiveData<List<Article>> = _searchedArticles
     var isSearched = false
@@ -45,11 +44,5 @@ class HistoryFragmentViewModel(
             }
             _searchedArticles.postValue(filteredArticlesList)
         }
-    }
-
-    override fun onCleared() {
-        prev = articlesInHistory
-        Log.i("hash code", "on Cleared")
-        super.onCleared()
     }
 }
