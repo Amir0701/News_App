@@ -1,6 +1,5 @@
-package com.example.newsapp.ui.view
+package com.example.newsapp.presentation.view
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,16 +12,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.newsapp.R
-import com.example.newsapp.data.model.Article
-import com.example.newsapp.ui.viewmodel.NewsDetailFragmentViewModel
+import com.example.newsapp.presentation.viewmodel.NewsDetailFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsDetailFragment : Fragment() {

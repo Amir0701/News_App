@@ -1,15 +1,13 @@
-package com.example.newsapp.ui.viewmodel
+package com.example.newsapp.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.model.Article
 import com.example.newsapp.data.model.Result
 import com.example.newsapp.domain.repository.ArticlesRepository
-import com.example.newsapp.ui.common.InternetConnection
-import com.example.newsapp.ui.common.Resource
+import com.example.newsapp.presentation.common.InternetConnection
+import com.example.newsapp.presentation.common.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response

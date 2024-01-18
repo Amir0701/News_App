@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.example.newsapp.ui.view.NewsFragment"
+        android:name="com.example.newsapp.presentation.view.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
         <action
@@ -16,22 +16,22 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.newsapp.ui.view.HistoryFragment"
+        android:name="com.example.newsapp.presentation.view.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
     <fragment
         android:id="@+id/favoritesArticlesFragment"
-        android:name="com.example.newsapp.ui.view.FavoritesArticlesFragment"
+        android:name="com.example.newsapp.presentation.view.FavoritesArticlesFragment"
         android:label="fragment_favorites_articles"
         tools:layout="@layout/fragment_favorites_articles" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.newsapp.ui.view.SettingsFragment"
+        android:name="com.example.newsapp.presentation.view.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/newsDetailFragment"
-        android:name="com.example.newsapp.ui.view.NewsDetailFragment"
+        android:name="com.example.newsapp.presentation.view.NewsDetailFragment"
         android:label="fragment_news_detail"
         tools:layout="@layout/fragment_news_detail" >
         <argument

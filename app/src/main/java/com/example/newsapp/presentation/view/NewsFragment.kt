@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.view
+package com.example.newsapp.presentation.view
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.MenuProvider
@@ -21,12 +20,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
-import com.example.newsapp.ui.common.Resource
-import com.example.newsapp.ui.viewmodel.NewsFragmentViewModel
+import com.example.newsapp.presentation.common.Resource
+import com.example.newsapp.presentation.viewmodel.NewsFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

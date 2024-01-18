@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.common
+package com.example.newsapp.presentation.common
 
 import android.content.Context
 import android.net.ConnectivityManager
