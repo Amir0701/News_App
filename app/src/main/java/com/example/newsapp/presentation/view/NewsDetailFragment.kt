@@ -33,6 +33,7 @@ class NewsDetailFragment : Fragment() {
     private var actionBar: ActionBar? = null
     private val navArg by navArgs<NewsDetailFragmentArgs>()
     val newsDetailViewModel: NewsDetailFragmentViewModel by viewModel()
+    private var isFavorite = false
 
     private val menuProvider = object: MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -47,8 +48,8 @@ class NewsDetailFragment : Fragment() {
                 }
 
                 R.id.favorite ->{
-                    newsDetailViewModel.isFavorite = !newsDetailViewModel.isFavorite
-                    if(newsDetailViewModel.isFavorite){
+                    isFavorite = !isFavorite
+                    if(isFavorite){
                         menuItem.setIcon(R.drawable.star_clicked)
                     }
                     else
@@ -110,5 +111,10 @@ class NewsDetailFragment : Fragment() {
         super.onDestroyView()
         actionBar?.setDisplayHomeAsUpEnabled(false)
         requireActivity().removeMenuProvider(menuProvider)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        newsDetailViewModel.addToFavorite(navArg.article, isFavorite)
     }
 }
