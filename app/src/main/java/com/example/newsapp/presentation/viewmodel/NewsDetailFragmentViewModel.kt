@@ -29,6 +29,10 @@ class NewsDetailFragmentViewModel(private val articlesRepository: ArticlesReposi
 
     fun isInFavorite(url: String) = viewModelScope.launch(Dispatchers.IO) {
         val res = articlesRepository.isInFavorite(url)
-        _isFavorite.postValue(true)
+        res?.let {
+            _isFavorite.postValue(it)
+        } ?: run{
+            _isFavorite.postValue(false)
+        }
     }
 }

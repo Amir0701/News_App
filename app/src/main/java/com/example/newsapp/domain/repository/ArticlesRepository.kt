@@ -12,9 +12,7 @@ interface ArticlesRepository {
 
     suspend fun getArticlesFromHistory(): List<ArticleEntity>
 
-
     suspend fun getFavoriteArticles(): List<ArticleEntity>
 
-    suspend fun isInFavorite(url: String): Boolean
-
+    suspend fun isInFavorite(url: String): Boolean?
 }
