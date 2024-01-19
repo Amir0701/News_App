@@ -22,7 +22,7 @@ class ArticlesRepositoryImpl(private val articleService: ArticleService,
         return articleDatabase.getDao().getArticlesFromHistory()
     }
 
-    override suspend fun isInFavorite(url: String): Boolean {
+    override suspend fun isInFavorite(url: String): Boolean? {
         return articleDatabase.getDao().isInFavorite(url)
     }
 }

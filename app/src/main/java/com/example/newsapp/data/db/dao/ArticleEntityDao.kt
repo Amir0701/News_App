@@ -15,5 +15,5 @@ interface ArticleEntityDao {
     suspend fun getArticlesFromHistory(): List<ArticleEntity>
 
     @Query("SELECT isInFavorite FROM Article WHERE url =:url")
-    suspend fun isInFavorite(url: String): Boolean
+    suspend fun isInFavorite(url: String): Boolean?
 }
