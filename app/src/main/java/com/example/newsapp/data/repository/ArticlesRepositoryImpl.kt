@@ -21,4 +21,8 @@ class ArticlesRepositoryImpl(private val articleService: ArticleService,
     override suspend fun getArticlesFromHistory(): List<ArticleEntity> {
         return articleDatabase.getDao().getArticlesFromHistory()
     }
+
+    override suspend fun isInFavorite(url: String): Boolean {
+        return articleDatabase.getDao().isInFavorite(url)
+    }
 }
