@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.view
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -14,7 +15,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.view.menu.ActionMenuItem
+import androidx.appcompat.view.menu.MenuItemImpl
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuItemCompat
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -32,13 +38,15 @@ class NewsDetailFragment : Fragment() {
     private var newsDetailLinkDescription: TextView? = null
     private var actionBar: ActionBar? = null
     private val navArg by navArgs<NewsDetailFragmentArgs>()
-    val newsDetailViewModel: NewsDetailFragmentViewModel by viewModel()
     private var isFavorite = false
+    val newsDetailViewModel: NewsDetailFragmentViewModel by viewModel()
+    private var menus: Menu? = null
 
     private val menuProvider = object: MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menu.clear()
             menuInflater.inflate(R.menu.favorite_menu, menu)
+            menus = menu
         }
 
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -76,10 +84,12 @@ class NewsDetailFragment : Fragment() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         initViews(view)
         setData()
+        observeOnIsFavoriteFlag()
     }
 
     override fun onStart() {
         super.onStart()
+        newsDetailViewModel.isInFavorite(navArg.article.url)
         newsDetailViewModel.addArticleToHistory(navArg.article)
     }
 
@@ -116,5 +126,17 @@ class NewsDetailFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         newsDetailViewModel.addToFavorite(navArg.article, isFavorite)
+    }
+    private fun observeOnIsFavoriteFlag(){
+        newsDetailViewModel.isFavorite.observe(viewLifecycleOwner) {isFavorite ->
+            this.isFavorite = isFavorite
+
+            menus?.let { menu ->
+                if(isFavorite){
+                    val favoriteMenuItem = menu.findItem(R.id.favorite)
+                    favoriteMenuItem?.setIcon(R.drawable.star_clicked)
+                }
+            }
+        }
     }
 }
