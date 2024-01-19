@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.menu.ActionMenuItem
 import androidx.appcompat.view.menu.MenuItemImpl
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Observer
@@ -39,7 +40,6 @@ class NewsDetailFragment : Fragment() {
     private val navArg by navArgs<NewsDetailFragmentArgs>()
     private var isFavorite = false
     val newsDetailViewModel: NewsDetailFragmentViewModel by viewModel()
-    private var menuItem: MenuItem? = null
     private var menus: Menu? = null
 
     private val menuProvider = object: MenuProvider {
@@ -56,9 +56,8 @@ class NewsDetailFragment : Fragment() {
                 }
 
                 R.id.favorite ->{
-                    //newsDetailViewModel.isFavorite = !newsDetailViewModel.isFavorite
                     isFavorite = !isFavorite
-                    if(newsDetailViewModel.isFavorite.value == true){
+                    if(isFavorite){
                         menuItem.setIcon(R.drawable.star_clicked)
                     }
                     else
@@ -102,7 +101,6 @@ class NewsDetailFragment : Fragment() {
         newsDetailLinkToArticle = view.findViewById(R.id.detail_news_link_to_article)
         newsDetailPublishedAt = view.findViewById(R.id.detail_news_published_at)
         newsDetailLinkDescription = view.findViewById(R.id.detail_news_link_desc)
-        menuItem = view.findViewById(R.id.favorite)
     }
 
 
@@ -125,25 +123,16 @@ class NewsDetailFragment : Fragment() {
         requireActivity().removeMenuProvider(menuProvider)
     }
 
-    @SuppressLint("RestrictedApi")
     private fun observeOnIsFavoriteFlag(){
         newsDetailViewModel.isFavorite.observe(viewLifecycleOwner) {isFavorite ->
             this.isFavorite = isFavorite
-            Log.i("TAG", "Fav")
-//            val men = ActionMenuItem(requireContext(), ActionMenuItem.SHOW_AS_ACTION_ALWAYS, R.id.favorite,
-//                MenuItem.SHOW_AS_ACTION_ALWAYS, ActionMenuItem.SHOW_AS_ACTION_ALWAYS, "Favorite")
-//            menuProvider.onMenuItemSelected(men)
 
-            val menIt = menus?.getItem(R.id.favorite)
-            menuItem?.let{
-                Log.i("TAG", "Menu")
+            menus?.let { menu ->
+                if(isFavorite){
+                    val favoriteMenuItem = menu.findItem(R.id.favorite)
+                    favoriteMenuItem?.setIcon(R.drawable.star_clicked)
+                }
             }
-
-            //(activity as MainActivity).supportActionBar?.
-            if(isFavorite)
-                menIt?.setIcon(R.drawable.star_clicked)
-            else
-                menIt?.setIcon(R.drawable.star)
         }
     }
 }
