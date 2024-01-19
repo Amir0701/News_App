@@ -32,6 +32,7 @@ class FavoritesArticlesFragment : Fragment() {
         initViews(view)
         setUpRecyclerView()
         observeOnFavoriteArticles()
+        favoriteFragmentViewModel.getFavoriteArticles()
     }
 
     private fun initViews(view: View){

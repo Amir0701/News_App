@@ -16,10 +16,6 @@ class FavoriteFragmentViewModel(
     private val _favoriteArticles = MutableLiveData<List<Article>>()
     val favoriteArticles: LiveData<List<Article>> = _favoriteArticles
 
-    init {
-        getFavoriteArticles()
-    }
-
     fun getFavoriteArticles() = viewModelScope.launch(Dispatchers.IO) {
         val favArticles= articlesRepository.getFavoriteArticles()
         val mappedArticles = favArticles.map(articleMapper::toArticle)
