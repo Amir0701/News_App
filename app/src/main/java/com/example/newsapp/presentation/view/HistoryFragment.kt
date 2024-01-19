@@ -78,6 +78,7 @@ class HistoryFragment : Fragment() {
     private fun setUpRecycler(){
         articlesFromHistoryRecycler?.layoutManager = LinearLayoutManager(requireContext())
         articlesFromHistoryRecycler?.adapter = adapter
+        articlesFromHistoryRecycler?.addItemDecoration(LastItemMarginRecyclerDecorator())
     }
     private fun observeOnArticlesFromHistory(){
         historyFragmentViewModel.articlesInHistory.observe(viewLifecycleOwner) { articles ->

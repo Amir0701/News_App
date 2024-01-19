@@ -39,6 +39,7 @@ class FavoritesArticlesFragment : Fragment() {
     private fun setUpRecyclerView(){
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         recyclerView?.adapter = adapter
+        recyclerView?.addItemDecoration(LastItemMarginRecyclerDecorator())
     }
 
     private fun observeOnFavoriteArticles(){
