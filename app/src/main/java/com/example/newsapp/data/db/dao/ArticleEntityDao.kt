@@ -13,4 +13,7 @@ interface ArticleEntityDao {
     suspend fun addToHistory(article: ArticleEntity)
     @Query("SELECT * FROM Article WHERE isInHistory = 1")
     suspend fun getArticlesFromHistory(): List<ArticleEntity>
+
+    @Query("SELECT * FROM ARTICLE WHERE isInFavorite = 1")
+    suspend fun getFavoriteArticles(): List<ArticleEntity>
 }

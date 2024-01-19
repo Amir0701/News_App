@@ -1,5 +1,6 @@
 package com.example.newsapp.di
 
+import com.example.newsapp.presentation.viewmodel.FavoriteFragmentViewModel
 import com.example.newsapp.presentation.viewmodel.HistoryFragmentViewModel
 import com.example.newsapp.presentation.viewmodel.NewsDetailFragmentViewModel
 import com.example.newsapp.presentation.viewmodel.NewsFragmentViewModel
@@ -17,4 +18,5 @@ val viewModelModule = module {
     }
 
     viewModelOf(::HistoryFragmentViewModel)
+    viewModelOf(::FavoriteFragmentViewModel)
 }
