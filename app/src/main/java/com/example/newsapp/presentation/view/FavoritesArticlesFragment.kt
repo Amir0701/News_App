@@ -4,20 +4,56 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.data.model.Article
 import com.example.newsapp.presentation.viewmodel.FavoriteFragmentViewModel
+import kotlinx.coroutines.Job
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesArticlesFragment : Fragment() {
     val favoriteFragmentViewModel: FavoriteFragmentViewModel by viewModel()
     private var recyclerView: RecyclerView? = null
     private val adapter = NewsAdapter()
+    private var searchJob: Job? = null
+
+    private val menuProvider = object: MenuProvider{
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            when(menuItem.itemId){
+                R.id.search ->{
+                    val searchView: SearchView = menuItem.actionView as SearchView
+                    searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                        override fun onQueryTextSubmit(query: String?): Boolean {
+                            searchJob?.cancel()
+                            query?.let {q->
+                                searchJob = favoriteFragmentViewModel.searchArticlesInFavorites(q)
+                            }
+                            return true
+                        }
+
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            return false
+                        }
+                    })
+                    return true
+                }
+            }
+            return false
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +69,13 @@ class FavoritesArticlesFragment : Fragment() {
         setUpRecyclerView()
         observeOnFavoriteArticles()
         favoriteFragmentViewModel.getFavoriteArticles()
+        requireActivity().addMenuProvider(menuProvider)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().removeMenuProvider(menuProvider)
+        searchJob?.cancel()
     }
 
     private fun initViews(view: View){
