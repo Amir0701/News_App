@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
+import com.example.newsapp.data.model.Article
 import com.example.newsapp.presentation.viewmodel.FavoriteFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,6 +42,11 @@ class FavoritesArticlesFragment : Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         recyclerView?.adapter = adapter
         recyclerView?.addItemDecoration(LastItemMarginRecyclerDecorator())
+        adapter.setOnArticleClickListener {article ->
+            val bundle = Bundle()
+            bundle.putSerializable("article", article)
+            findNavController().navigate(R.id.action_favoritesArticlesFragment_to_newsDetailFragment, bundle)
+        }
     }
 
     private fun observeOnFavoriteArticles(){

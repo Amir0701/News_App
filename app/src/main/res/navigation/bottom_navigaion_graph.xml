@@ -27,7 +27,11 @@
         android:id="@+id/favoritesArticlesFragment"
         android:name="com.example.newsapp.presentation.view.FavoritesArticlesFragment"
         android:label="fragment_favorites_articles"
-        tools:layout="@layout/fragment_favorites_articles" />
+        tools:layout="@layout/fragment_favorites_articles" >
+        <action
+            android:id="@+id/action_favoritesArticlesFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.newsapp.presentation.view.SettingsFragment"
