@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
@@ -79,6 +80,12 @@ class HistoryFragment : Fragment() {
         articlesFromHistoryRecycler?.layoutManager = LinearLayoutManager(requireContext())
         articlesFromHistoryRecycler?.adapter = adapter
         articlesFromHistoryRecycler?.addItemDecoration(LastItemMarginRecyclerDecorator())
+
+        adapter.setOnArticleClickListener {article ->
+            val bundle = Bundle()
+            bundle.putSerializable("article", article)
+            findNavController().navigate(R.id.action_historyFragment_to_newsDetailFragment, bundle)
+        }
     }
     private fun observeOnArticlesFromHistory(){
         historyFragmentViewModel.articlesInHistory.observe(viewLifecycleOwner) { articles ->
