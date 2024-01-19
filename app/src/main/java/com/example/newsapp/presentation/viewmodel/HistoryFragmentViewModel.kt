@@ -20,25 +20,25 @@ class HistoryFragmentViewModel(
     private val _searchedArticles = MutableLiveData<List<Article>>()
     val searchedArticles: LiveData<List<Article>> = _searchedArticles
     var isSearched = false
+    private var histories: List<Article> = emptyList()
     fun getArticlesFromHistory() = viewModelScope.launch(Dispatchers.IO){
         val articlesFromHistory = articlesRepository.getArticlesFromHistory()
         val articles = articlesFromHistory.map(mapper::toArticle)
         _articlesInHistory.postValue(articles)
+        histories = articles
     }
 
     fun searchArticles(query: String) = viewModelScope.launch(Dispatchers.IO){
         val filteredArticlesList = mutableListOf<Article>()
-        articlesInHistory.value?.let { articles ->
-            for(article in articles){
-                if(
-                    article.title.contains(query, ignoreCase = true) ||
-                    article.description.contains(query, ignoreCase = true) ||
-                    article.content.contains(query, ignoreCase = true)
-                ){
-                    filteredArticlesList.add(article)
-                }
+        histories.forEach {article ->
+            if(article.title.contains(query, ignoreCase = true) ||
+                article.description.contains(query, ignoreCase = true) ||
+                article.content.contains(query, ignoreCase = true)
+            ){
+                filteredArticlesList.add(article)
             }
-            _searchedArticles.postValue(filteredArticlesList)
         }
+
+        _searchedArticles.postValue(filteredArticlesList)
     }
 }
