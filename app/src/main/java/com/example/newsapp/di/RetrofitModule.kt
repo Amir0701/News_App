@@ -1,5 +1,6 @@
 package com.example.newsapp.di
 
+import com.example.newsapp.BuildConfig
 import com.example.newsapp.data.interceptor.HttpHeaderInterceptor
 import com.example.newsapp.presentation.common.InternetConnection
 import com.google.gson.Gson
@@ -20,7 +21,7 @@ val retrofitModule = module {
 
     single<Retrofit> {
         Retrofit.Builder()
-            .baseUrl("https://newsapi.org")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(get(GsonConverterFactory::class))
             .client(get(OkHttpClient::class))
             .build()

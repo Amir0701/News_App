@@ -1,5 +1,6 @@
 package com.example.newsapp.data.interceptor
 
+import com.example.newsapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -9,7 +10,7 @@ class HttpHeaderInterceptor: Interceptor {
             chain
             .request()
             .newBuilder()
-            .addHeader("X-Api-Key", "ca9984bf10144e429d80f30de1c8ab7e")
+            .addHeader("X-Api-Key", BuildConfig.API_KEY)
             .build()
 
         return chain.proceed(request)
