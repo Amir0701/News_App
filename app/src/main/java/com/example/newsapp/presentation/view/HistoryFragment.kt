@@ -13,6 +13,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.MenuProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,7 +59,7 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    private var gestureDetector: GestureDetector? = null
+    private var gestureDetector: GestureDetectorCompat? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,18 +72,26 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as  MainActivity).supportActionBar?.title = resources.getString(R.string.history_fragment_title)
         articlesFromHistoryRecycler = view.findViewById(R.id.article_history_recycler)
+        gestureDetector = GestureDetectorCompat(requireContext(), object : GestureDetector.SimpleOnGestureListener(){
+            override fun onLongPress(e: MotionEvent) {
+                //super.onLongPress(e)
+                startAction()
+            }
+
+            override fun onContextClick(e: MotionEvent): Boolean {
+                val bundle = Bundle()
+                bundle.putSerializable("article", selectedArticle)
+                findNavController().navigate(R.id.action_historyFragment_to_newsDetailFragment)
+                return true
+            }
+        })
         requireActivity().addMenuProvider(menuProvider)
         setUpRecycler()
         historyFragmentViewModel.getArticlesFromHistory()
         observeOnArticlesFromHistory()
         observeOnSearchedArticles()
 
-        gestureDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener(){
-            override fun onLongPress(e: MotionEvent) {
-                super.onLongPress(e)
-                startAction()
-            }
-        })
+        gestureDetector?.setIsLongpressEnabled(true)
     }
 
     override fun onDestroyView() {
@@ -100,12 +109,12 @@ class HistoryFragment : Fragment() {
             val bundle = Bundle()
             bundle.putSerializable("article", article)
             findNavController().navigate(R.id.action_historyFragment_to_newsDetailFragment, bundle)
+        }
 
-            adapter.setOnTouchListener { motionEvent, article, position ->
-                selectedArticle = article
-                selectedPosition = position
-                gestureDetector?.onTouchEvent(motionEvent) ?: false
-            }
+        adapter.setOnTouchListener { motionEvent, article, position ->
+            selectedArticle = article
+            selectedPosition = position
+            gestureDetector?.onTouchEvent(motionEvent) ?: false
         }
     }
     private fun observeOnArticlesFromHistory(){

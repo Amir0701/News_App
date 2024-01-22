@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.view
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -40,12 +41,13 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         return listDiffer.currentList.size
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val currentArticle = listDiffer.currentList[position]
         holder.bind(currentArticle)
-        holder.itemView.setOnClickListener {
-            onArticleClickListener?.invoke(currentArticle)
-        }
+//        holder.itemView.setOnClickListener {
+//            onArticleClickListener?.invoke(currentArticle)
+//        }
 
         holder.itemView.setOnTouchListener { view, motionEvent ->
             onTouchListener?.invoke(motionEvent, currentArticle, position) ?: false
