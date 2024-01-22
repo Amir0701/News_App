@@ -2,11 +2,14 @@ package com.example.newsapp.presentation.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.ActionMode
+import android.view.GestureDetector
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
@@ -15,7 +18,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
+import com.example.newsapp.data.model.Article
 import com.example.newsapp.presentation.viewmodel.HistoryFragmentViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,7 +29,9 @@ class HistoryFragment : Fragment() {
     private var articlesFromHistoryRecycler: RecyclerView? = null
     private val adapter = NewsAdapter()
     private var searchJob: Job? = null
-
+    private var actionMode: ActionMode? = null
+    private var selectedArticle: Article? = null
+    private var selectedPosition = 0
     private val menuProvider = object: MenuProvider{
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 
@@ -49,8 +56,9 @@ class HistoryFragment : Fragment() {
 
             return false
         }
-
     }
+
+    private var gestureDetector: GestureDetector? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,6 +76,13 @@ class HistoryFragment : Fragment() {
         historyFragmentViewModel.getArticlesFromHistory()
         observeOnArticlesFromHistory()
         observeOnSearchedArticles()
+
+        gestureDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener(){
+            override fun onLongPress(e: MotionEvent) {
+                super.onLongPress(e)
+                startAction()
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -76,15 +91,21 @@ class HistoryFragment : Fragment() {
         searchJob?.cancel()
     }
 
-    private fun setUpRecycler(){
+    private fun setUpRecycler() {
         articlesFromHistoryRecycler?.layoutManager = LinearLayoutManager(requireContext())
         articlesFromHistoryRecycler?.adapter = adapter
         articlesFromHistoryRecycler?.addItemDecoration(LastItemMarginRecyclerDecorator())
 
-        adapter.setOnArticleClickListener {article ->
+        adapter.setOnArticleClickListener { article ->
             val bundle = Bundle()
             bundle.putSerializable("article", article)
             findNavController().navigate(R.id.action_historyFragment_to_newsDetailFragment, bundle)
+
+            adapter.setOnTouchListener { motionEvent, article, position ->
+                selectedArticle = article
+                selectedPosition = position
+                gestureDetector?.onTouchEvent(motionEvent) ?: false
+            }
         }
     }
     private fun observeOnArticlesFromHistory(){
@@ -102,5 +123,40 @@ class HistoryFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun startAction(){
+        actionMode = requireActivity().startActionMode(object : ActionMode.Callback{
+            override fun onCreateActionMode(p0: ActionMode?, p1: Menu?): Boolean {
+                (activity as MainActivity).supportActionBar?.hide()
+                requireActivity().menuInflater.inflate(R.menu.delete_menu, p1)
+                return true
+            }
+
+            override fun onPrepareActionMode(p0: ActionMode?, p1: Menu?): Boolean {
+                return false
+            }
+
+            override fun onActionItemClicked(p0: ActionMode?, p1: MenuItem?): Boolean {
+                if(p1?.itemId == R.id.delete){
+                    selectedArticle?.let {article ->
+                        historyFragmentViewModel.deleteArticle(article)
+                        articlesFromHistoryRecycler?.adapter?.notifyItemRemoved(selectedPosition)
+                        Snackbar.make(
+                            requireView(),
+                            resources.getString(R.string.article_delete_message),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    p0?.finish()
+                }
+                return true
+            }
+
+            override fun onDestroyActionMode(p0: ActionMode?) {
+                actionMode = null
+                (activity as MainActivity).supportActionBar?.show()
+            }
+        })
     }
 }

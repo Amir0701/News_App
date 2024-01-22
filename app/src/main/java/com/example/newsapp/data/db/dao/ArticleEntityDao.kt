@@ -1,6 +1,7 @@
 package com.example.newsapp.data.db.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -14,10 +15,13 @@ interface ArticleEntityDao {
     @Query("SELECT * FROM Article WHERE isInHistory = 1")
     suspend fun getArticlesFromHistory(): List<ArticleEntity>
 
+
     @Query("SELECT * FROM ARTICLE WHERE isInFavorite = 1")
     suspend fun getFavoriteArticles(): List<ArticleEntity>
 
     @Query("SELECT isInFavorite FROM Article WHERE url =:url")
     suspend fun isInFavorite(url: String): Boolean?
 
+    @Delete
+    suspend fun deleteArticle(article: ArticleEntity)
 }

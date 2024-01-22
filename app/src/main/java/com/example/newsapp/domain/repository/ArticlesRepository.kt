@@ -15,4 +15,6 @@ interface ArticlesRepository {
     suspend fun getFavoriteArticles(): List<ArticleEntity>
 
     suspend fun isInFavorite(url: String): Boolean?
+    suspend fun deleteArticle(article: ArticleEntity)
+
 }

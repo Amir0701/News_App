@@ -28,5 +28,9 @@ class ArticlesRepositoryImpl(private val articleService: ArticleService,
 
     override suspend fun isInFavorite(url: String): Boolean? {
         return articleDatabase.getDao().isInFavorite(url)
+
+    }
+    override suspend fun deleteArticle(article: ArticleEntity) {
+        articleDatabase.getDao().deleteArticle(article)
     }
 }
