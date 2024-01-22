@@ -17,7 +17,9 @@ import androidx.core.view.MenuProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
+import com.example.newsapp.data.model.Article
 import com.example.newsapp.presentation.viewmodel.HistoryFragmentViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,7 +29,8 @@ class HistoryFragment : Fragment() {
     private val adapter = NewsAdapter()
     private var searchJob: Job? = null
     private var actionMode: ActionMode? = null
-
+    private var selectedArticle: Article? = null
+    private var selectedPosition = 0
     private val menuProvider = object: MenuProvider{
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 
@@ -90,7 +93,9 @@ class HistoryFragment : Fragment() {
     private fun setUpRecycler(){
         articlesFromHistoryRecycler?.layoutManager = LinearLayoutManager(requireContext())
         articlesFromHistoryRecycler?.adapter = adapter
-        adapter.setOnTouchListener {motionEvent ->
+        adapter.setOnTouchListener {motionEvent, article, position ->
+            selectedArticle = article
+            selectedPosition = position
             gestureDetector?.onTouchEvent(motionEvent) ?: false
         }
     }
@@ -125,6 +130,15 @@ class HistoryFragment : Fragment() {
 
             override fun onActionItemClicked(p0: ActionMode?, p1: MenuItem?): Boolean {
                 if(p1?.itemId == R.id.delete){
+                    selectedArticle?.let {article ->
+                        historyFragmentViewModel.deleteArticle(article)
+                        articlesFromHistoryRecycler?.adapter?.notifyItemRemoved(selectedPosition)
+                        Snackbar.make(
+                            requireView(),
+                            resources.getString(R.string.article_delete_message),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                     p0?.finish()
                 }
                 return true

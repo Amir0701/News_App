@@ -21,4 +21,8 @@ class ArticlesRepositoryImpl(private val articleService: ArticleService,
     override suspend fun getArticlesFromHistory(): List<ArticleEntity> {
         return articleDatabase.getDao().getArticlesFromHistory()
     }
+
+    override suspend fun deleteArticle(article: ArticleEntity) {
+        articleDatabase.getDao().deleteArticle(article)
+    }
 }

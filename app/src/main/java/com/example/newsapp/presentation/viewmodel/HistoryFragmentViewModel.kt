@@ -41,4 +41,9 @@ class HistoryFragmentViewModel(
             _searchedArticles.postValue(filteredArticlesList)
         }
     }
+
+    fun deleteArticle(article: Article) = viewModelScope.launch(Dispatchers.IO) {
+        val articleEntity = mapper.toArticleEntity(article)
+        articlesRepository.deleteArticle(articleEntity)
+    }
 }

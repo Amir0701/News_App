@@ -11,4 +11,6 @@ interface ArticlesRepository {
     suspend fun addArticleToHistory(article: ArticleEntity)
 
     suspend fun getArticlesFromHistory(): List<ArticleEntity>
+
+    suspend fun deleteArticle(article: ArticleEntity)
 }

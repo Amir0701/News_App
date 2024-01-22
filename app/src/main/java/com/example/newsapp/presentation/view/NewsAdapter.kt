@@ -48,7 +48,7 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         }
 
         holder.itemView.setOnTouchListener { view, motionEvent ->
-            onTouchListener?.invoke(motionEvent) ?: false
+            onTouchListener?.invoke(motionEvent, currentArticle, position) ?: false
         }
     }
 
@@ -73,8 +73,8 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         onArticleClickListener = clickListener
     }
 
-    private var onTouchListener: ((motionEvent: MotionEvent) -> Boolean)? = null
-    fun setOnTouchListener(onTouchListener: (motionEvent: MotionEvent) -> Boolean){
+    private var onTouchListener: ((motionEvent: MotionEvent, article: Article, position: Int) -> Boolean)? = null
+    fun setOnTouchListener(onTouchListener: (motionEvent: MotionEvent, article: Article, position: Int) -> Boolean){
         this.onTouchListener = onTouchListener
     }
 }
