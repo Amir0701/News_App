@@ -144,7 +144,6 @@ class NewsFragment : Fragment() {
                         progressBar?.visibility = View.GONE
                         resource.data?.let { result->
                             newsAdapter.setData(result.articles)
-                            recyclerView?.scrollToPosition(0)
                         }
                     }
                 }
