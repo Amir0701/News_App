@@ -38,6 +38,7 @@ class NewsFragment : Fragment() {
     private var progressBar: ProgressBar? = null
     private var constraintLayout: ConstraintLayout? = null
     private var searchJob: Job? = null
+    private var fetchJob: Job? = null
 
     val sharedPreferences: SharedPreferences by inject()
 
@@ -92,17 +93,19 @@ class NewsFragment : Fragment() {
         requireActivity().addMenuProvider(menuProvider)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        requireActivity().removeMenuProvider(menuProvider)
-        searchJob?.cancel()
-    }
-
     override fun onStart() {
         super.onStart()
         (activity as MainActivity).supportActionBar?.title = resources.getString(R.string.news_fragment_title)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().removeMenuProvider(menuProvider)
+        searchJob?.cancel()
+        fetchJob?.cancel()
+        fetchJob = null
+        searchJob = null
+    }
     private fun initViews(view: View){
         recyclerView = view.findViewById(R.id.news_recycler)
         tabLayout = view.findViewById(R.id.category_tab_layout)
@@ -120,10 +123,12 @@ class NewsFragment : Fragment() {
                     }
 
                     is Resource.Loading -> {
-                        if(searchJob?.isActive == true)
+                        if(fetchJob?.isActive == true || searchJob?.isActive == true){
                             progressBar?.visibility = View.VISIBLE
-                        else
+                        }
+                        else{
                             progressBar?.visibility = View.GONE
+                        }
                     }
 
                     is Resource.NoInternetConnection -> {
@@ -182,7 +187,7 @@ class NewsFragment : Fragment() {
 
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                newsFragmentViewModel.getArticles(tab?.text.toString())
+                fetchJob = newsFragmentViewModel.getArticles(tab?.text.toString())
                 newsFragmentViewModel.selectedCategory = tab?.text.toString()
             }
 
@@ -194,10 +199,11 @@ class NewsFragment : Fragment() {
         })
 
         tabLayout?.let {tabLayout ->
+            fetchJob?.cancel()
             if(tabLayout.tabCount > 0){
                 if(newsFragmentViewModel.selectedCategory.isEmpty()){
                     val tab = tabLayout.getTabAt(tabLayout.selectedTabPosition)
-                    newsFragmentViewModel.getArticles(tab?.text.toString())
+                    fetchJob = newsFragmentViewModel.getArticles(tab?.text.toString())
                     newsFragmentViewModel.selectedCategory = tab?.text.toString()
                 } else {
 
@@ -206,7 +212,7 @@ class NewsFragment : Fragment() {
             else{
                 tabLayout.visibility = View.INVISIBLE
                 changeRecyclerViewConstraints()
-                newsFragmentViewModel.getArticles("all")
+                fetchJob = newsFragmentViewModel.getArticles("all")
             }
         }
     }
