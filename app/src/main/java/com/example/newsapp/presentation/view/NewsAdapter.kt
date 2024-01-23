@@ -57,10 +57,8 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         }
 
         holder.itemView.setOnTouchListener { view, motionEvent ->
-            //onTouchListener?.invoke(motionEvent, currentArticle, position) ?: false
-            false
+            onTouchListener?.invoke(motionEvent, currentArticle, position) ?: false
         }
-
     }
 
     fun setData(articles: List<Article>){

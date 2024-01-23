@@ -36,8 +36,6 @@ class HistoryFragment : Fragment() {
     private var actionMode: ActionMode? = null
     private var selectedArticle: Article? = null
     private var selectedPosition = 0
-    private var startTime: Long = 0
-    private var isLongClickHandled = false
 
     private val menuProvider = object: MenuProvider{
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -65,7 +63,6 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    private var gestureDetector: GestureDetectorCompat? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -103,13 +100,6 @@ class HistoryFragment : Fragment() {
             findNavController().navigate(R.id.action_historyFragment_to_newsDetailFragment, bundle)
         }
 
-        adapter.setOnTouchListener { motionEvent, article, position ->
-            selectedArticle = article
-            selectedPosition = position
-            //gestureDetector?.onTouchEvent(motionEvent) ?: false
-            handleEvent(motionEvent)
-            true
-        }
 
         adapter.setOnLongClickListener { article, position ->
             selectedArticle = article
@@ -118,26 +108,6 @@ class HistoryFragment : Fragment() {
         }
     }
 
-    private fun initGestureDetector(){
-        gestureDetector = GestureDetectorCompat(requireContext(), object : GestureDetector.SimpleOnGestureListener(){
-            override fun onLongPress(e: MotionEvent) {
-                //super.onLongPress(e)
-                startAction()
-            }
-
-            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-                val bundle = Bundle()
-                bundle.putSerializable("article", selectedArticle)
-                findNavController().navigate(R.id.action_historyFragment_to_newsDetailFragment)
-                return true
-            }
-        })
-
-
-        gestureDetector?.setIsLongpressEnabled(true)
-
-        //GestureDetectorCompat(requireContext(), object : GestureDetector.)
-    }
     private fun observeOnArticlesFromHistory(){
         historyFragmentViewModel.articlesInHistory.observe(viewLifecycleOwner) { articles ->
             adapter.setData(articles)
@@ -188,50 +158,5 @@ class HistoryFragment : Fragment() {
                 (activity as MainActivity).supportActionBar?.show()
             }
         })
-    }
-
-    private fun handleEvent(event: MotionEvent){
-        when(event.action){
-            MotionEvent.ACTION_DOWN -> {
-                startTime = System.currentTimeMillis();
-                isLongClickHandled = false
-                handler.postDelayed(longClickRunnable, 1000L);
-            }
-            MotionEvent.ACTION_UP -> {
-                try {
-                    val duration = System.currentTimeMillis() - startTime
-                    handler.removeCallbacks(longClickRunnable)
-                    if (!isLongClickHandled) {
-                        // Обработка одиночного клика здесь
-                        val bundle = Bundle()
-                        bundle.putSerializable("article", selectedArticle)
-                        findNavController().navigate(R.id.action_historyFragment_to_newsDetailFragment)
-                    }
-                }catch (e: TimeoutException){
-
-                }
-                finally {
-                    handler.removeCallbacks(longClickRunnable)
-                }
-            }
-
-            MotionEvent.ACTION_CANCEL -> {
-                startTime = 0
-                handler.removeCallbacks(longClickRunnable)
-            }
-        }
-    }
-
-    val handler: Handler = Handler(Looper.getMainLooper())
-    private val longClickRunnable = Runnable {
-        handleLongPress()
-        isLongClickHandled = true
-        if (!isLongClickHandled) {
-            // Обработка долгого нажатия здесь
-        }
-    }
-
-    private fun handleLongPress() {
-        startAction()
     }
 }
