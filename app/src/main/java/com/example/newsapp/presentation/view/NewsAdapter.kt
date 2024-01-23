@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -45,13 +46,21 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val currentArticle = listDiffer.currentList[position]
         holder.bind(currentArticle)
-//        holder.itemView.setOnClickListener {
-//            onArticleClickListener?.invoke(currentArticle)
-//        }
+
+        holder.itemView.setOnClickListener {
+            onArticleClickListener?.invoke(currentArticle)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            onLongClickListener?.invoke(currentArticle, position) ?: false
+            true
+        }
 
         holder.itemView.setOnTouchListener { view, motionEvent ->
-            onTouchListener?.invoke(motionEvent, currentArticle, position) ?: false
+            //onTouchListener?.invoke(motionEvent, currentArticle, position) ?: false
+            false
         }
+
     }
 
     fun setData(articles: List<Article>){
@@ -78,5 +87,11 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     private var onTouchListener: ((motionEvent: MotionEvent, article: Article, position: Int) -> Boolean)? = null
     fun setOnTouchListener(onTouchListener: (motionEvent: MotionEvent, article: Article, position: Int) -> Boolean){
         this.onTouchListener = onTouchListener
+    }
+
+    private var onLongClickListener:((article: Article, position: Int) -> Unit)? = null
+
+    fun setOnLongClickListener(onLongClickListener: (article: Article, position: Int) -> Unit){
+        this.onLongClickListener = onLongClickListener
     }
 }
