@@ -1,19 +1,14 @@
 package com.example.newsapp.presentation.view
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.ActionMode
-import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -26,7 +21,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeoutException
 
 
 class HistoryFragment : Fragment() {
@@ -142,7 +136,7 @@ class HistoryFragment : Fragment() {
                 if(p1?.itemId == R.id.delete){
                     selectedArticle?.let {article ->
                         historyFragmentViewModel.deleteArticle(article)
-                        articlesFromHistoryRecycler?.adapter?.notifyItemRemoved(selectedPosition)
+                        adapter.removeAt(selectedPosition)
                         Snackbar.make(
                             requireView(),
                             resources.getString(R.string.article_delete_message),

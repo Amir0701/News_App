@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -91,5 +90,11 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     fun setOnLongClickListener(onLongClickListener: (article: Article, position: Int) -> Unit){
         this.onLongClickListener = onLongClickListener
+    }
+
+    fun removeAt(pos: Int){
+        val list = listDiffer.currentList.toMutableList()
+        list.removeAt(pos)
+        listDiffer.submitList(list)
     }
 }
