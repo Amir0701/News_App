@@ -58,6 +58,7 @@ class HistoryFragmentViewModel(
             articlesRepository.deleteArticle(articleEntity)
         }
         historyMap.remove(articleEntity.url)
+        _articlesInHistory.postValue(historyMap.values.map(mapper::toArticle).toList())
     }
 
     fun deleteArticles(articles: List<Article>) = viewModelScope.launch(Dispatchers.IO) {

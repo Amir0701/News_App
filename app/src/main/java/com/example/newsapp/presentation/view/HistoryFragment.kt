@@ -136,7 +136,7 @@ class HistoryFragment : Fragment() {
                 if(p1?.itemId == R.id.delete){
                     selectedArticle?.let {article ->
                         historyFragmentViewModel.deleteArticle(article)
-                        adapter.removeAt(selectedPosition)
+                        //adapter.removeAt(selectedPosition)
                         Snackbar.make(
                             requireView(),
                             resources.getString(R.string.article_delete_message),
