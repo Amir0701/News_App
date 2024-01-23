@@ -24,6 +24,7 @@ import com.example.newsapp.data.model.Article
 import com.example.newsapp.presentation.viewmodel.HistoryFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeoutException
 
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeoutException
 class HistoryFragment : Fragment() {
     private val historyFragmentViewModel: HistoryFragmentViewModel by viewModel()
     private var articlesFromHistoryRecycler: RecyclerView? = null
-    private val adapter = NewsAdapter()
+    private val adapter by inject<NewsAdapter>()
     private var searchJob: Job? = null
     private var actionMode: ActionMode? = null
     private var selectedArticle: Article? = null

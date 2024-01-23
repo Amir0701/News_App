@@ -18,12 +18,13 @@ import com.example.newsapp.R
 import com.example.newsapp.data.model.Article
 import com.example.newsapp.presentation.viewmodel.FavoriteFragmentViewModel
 import kotlinx.coroutines.Job
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesArticlesFragment : Fragment() {
     private val favoriteFragmentViewModel: FavoriteFragmentViewModel by viewModel()
     private var recyclerView: RecyclerView? = null
-    private val adapter = NewsAdapter()
+    private val adapter: NewsAdapter by inject()
     private var searchJob: Job? = null
 
     private val menuProvider = object: MenuProvider{

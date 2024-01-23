@@ -32,7 +32,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsFragment : Fragment() {
     private val newsFragmentViewModel: NewsFragmentViewModel by viewModel()
-    private val newsAdapter = NewsAdapter()
+    private val newsAdapter: NewsAdapter by inject()
     private var recyclerView: RecyclerView? = null
     private var tabLayout: TabLayout? = null
     private var progressBar: ProgressBar? = null
