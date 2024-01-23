@@ -29,7 +29,7 @@ import java.util.concurrent.TimeoutException
 
 
 class HistoryFragment : Fragment() {
-    val historyFragmentViewModel: HistoryFragmentViewModel by viewModel()
+    private val historyFragmentViewModel: HistoryFragmentViewModel by viewModel()
     private var articlesFromHistoryRecycler: RecyclerView? = null
     private val adapter = NewsAdapter()
     private var searchJob: Job? = null

@@ -15,7 +15,7 @@ class SettingsFragment : Fragment() {
     private var natureCheckBox: MaterialCheckBox? = null
     private var sportCheckBox: MaterialCheckBox? = null
     private var scienceCheckBox: MaterialCheckBox? = null
-    val sharedPreferences: SharedPreferences by inject()
+    private val sharedPreferences: SharedPreferences by inject()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -39,7 +39,7 @@ class NewsDetailFragment : Fragment() {
     private var actionBar: ActionBar? = null
     private val navArg by navArgs<NewsDetailFragmentArgs>()
     private var isFavorite = false
-    val newsDetailViewModel: NewsDetailFragmentViewModel by viewModel()
+    private val newsDetailViewModel: NewsDetailFragmentViewModel by viewModel()
     private var menus: Menu? = null
 
     private val menuProvider = object: MenuProvider {

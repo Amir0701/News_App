@@ -21,7 +21,7 @@ import kotlinx.coroutines.Job
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesArticlesFragment : Fragment() {
-    val favoriteFragmentViewModel: FavoriteFragmentViewModel by viewModel()
+    private val favoriteFragmentViewModel: FavoriteFragmentViewModel by viewModel()
     private var recyclerView: RecyclerView? = null
     private val adapter = NewsAdapter()
     private var searchJob: Job? = null

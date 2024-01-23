@@ -31,7 +31,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsFragment : Fragment() {
-    val newsFragmentViewModel: NewsFragmentViewModel by viewModel()
+    private val newsFragmentViewModel: NewsFragmentViewModel by viewModel()
     private val newsAdapter = NewsAdapter()
     private var recyclerView: RecyclerView? = null
     private var tabLayout: TabLayout? = null
@@ -40,7 +40,7 @@ class NewsFragment : Fragment() {
     private var searchJob: Job? = null
     private var fetchJob: Job? = null
 
-    val sharedPreferences: SharedPreferences by inject()
+    private val sharedPreferences: SharedPreferences by inject()
 
     private val menuProvider = object : MenuProvider{
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
