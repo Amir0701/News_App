@@ -1,6 +1,7 @@
 package com.example.newsapp
 
 import android.app.Application
+import com.example.newsapp.di.adapterModule
 import com.example.newsapp.di.localDataBase
 import com.example.newsapp.di.mapperModule
 import com.example.newsapp.di.repositoryModule
@@ -22,7 +23,8 @@ class App: Application() {
                     viewModelModule,
                     sharedPreferenceModule,
                     localDataBase,
-                    mapperModule
+                    mapperModule,
+                    adapterModule
                 )
             )
         }
